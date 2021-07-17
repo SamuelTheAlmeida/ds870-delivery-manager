@@ -1,0 +1,303 @@
+{
+	"info": {
+		"_postman_id": "aa620708-641d-43b7-adb1-33819e221578",
+		"name": "DeliveryManager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Entrega",
+			"item": [
+				{
+					"name": "Entrega - Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/entrega/listar",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"entrega",
+								"listar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Entrega - Novo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descricao\": \"blablabla\",\r\n    \"clienteId\": 2,\r\n    \"motoboyId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/entrega/novo",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"entrega",
+								"novo"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cliente",
+			"item": [
+				{
+					"name": "Cliente - Novo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImlhdCI6MTYyNjQ3NzY3OSwiZXhwIjoxNjI2NTYwNDc5fQ._2Xtr9zxSmRouhxym10vErrfEztV7hs2FH3c7d6FN_g",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomeEmpresa\": \"abcde\",\r\n    \"CNPJ\": \"15978680000190\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/cliente/novo",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"cliente",
+								"novo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cliente - Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/cliente/listar",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"cliente",
+								"listar"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Motoboy",
+			"item": [
+				{
+					"name": "Motoboy - Listar",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"teste motoboy\",\r\n    \"CPF\": \"10472210980\",\r\n    \"senha\": \"123\",\r\n    \"telefone\": \"995235316\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/motoboy/listar",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"motoboy",
+								"listar"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Associado",
+			"item": [
+				{
+					"name": "Associado - Novo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomeEmpresa\": \"teste ltda\",\r\n    \"CNPJ\": \"1451551\",\r\n    \"senha\": \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/associado/novo",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"associado",
+								"novo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Associado - Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/associado/listar",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"associado",
+								"listar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Associado - Listar por CNPJ",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"CNPJ\": \"1451551\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/associado/buscarPorCNPJ",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"associado",
+								"buscarPorCNPJ"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Associado - Atualizar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"nomeEmpresa\": \"AAAAAAAAAA\",\r\n    \"CNPJ\": \"1451551\",\r\n    \"senha\": \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/associado/atualizar",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"associado",
+								"atualizar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Associado - Excluir",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/associado/excluir/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"associado",
+								"excluir",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Entrega - Listar por Motoboy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/entrega/listarPorMotoboy/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"entrega",
+						"listarPorMotoboy",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
