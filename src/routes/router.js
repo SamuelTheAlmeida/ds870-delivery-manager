@@ -5,6 +5,7 @@ const clienteRouter = require("./clienteRouter");
 const motoboyRouter = require("./motoboyRouter");
 const entregaRouter = require("./entregaRouter");
 const associadoRouter = require("./associadoRouter");
+const loginRouter = require("./loginRouter");
 
 const router = express.Router();
 
@@ -19,5 +20,6 @@ router.use("/cliente", clienteRouter);
 router.use("/motoboy", motoboyRouter);
 router.use("/entrega", entregaRouter);
 router.use("/associado", associadoRouter);
+router.use("/login", loginRouter);
 
 module.exports = router;

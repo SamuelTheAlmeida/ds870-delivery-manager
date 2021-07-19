@@ -1,6 +1,6 @@
 const express = require("express");
 const associadoRouter = express.Router();
-const associadoController = require("../controllers/AssociadoController");
+const associadoController = require("../controllers/associadoController");
 const auth = require("../middlewares/auth");
 const requestValidator = require("../middlewares/schemaValidator")
 

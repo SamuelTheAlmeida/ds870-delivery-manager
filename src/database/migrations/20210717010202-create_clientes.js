@@ -21,6 +21,13 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      associadoId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: { model: "Associados", key: "id" },
+        onUpdate: "RESTRICT",
+        onDelete: "RESTRICT"
+      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,

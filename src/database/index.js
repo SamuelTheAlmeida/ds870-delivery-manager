@@ -21,6 +21,9 @@ Associado.init(connection);
 
 Seller.associate(connection.models);
 Sale.associate(connection.models);
+
 Entrega.associate(connection.models);
+Cliente.associate(connection.models);
+Associado.associate(connection.models);
 
 module.exports = connection;

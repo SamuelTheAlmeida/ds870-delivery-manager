@@ -27,13 +27,21 @@ function novoClienteValidator(req, res) {
 
 module.exports = {
     async novo(req, res) {
+        const token = req.headers['x-access-token'];
+        const secret = process.env.JWT_SECRET;
+        const decoded = jwt.verify(token, secret);
+        console.log(decoded);
+
+        if (decoded.role !== 'associado' || !decoded.id)
+            return res.status(403).json({ msg: "Acesso não permitido." });
+
         const { nomeEmpresa, CNPJ, endereco } = req.body;
         const { validator, error } = novoClienteValidator(req, res);
         if (!validator) {
             return res.status(422).json({
                 msg: "daods invalidos",
                 error: error[0].message
-            })
+            });
         }
 
         const cnpjExiste = await Cliente.findOne({
@@ -41,20 +49,21 @@ module.exports = {
         });
 
         if (cnpjExiste)
-            res.status(403).json({ msg: "CNPJ já cadastrado "});
+            return res.status(403).json({ msg: "CNPJ já cadastrado "});
         else {
             const cliente = await Cliente.create({
                 nomeEmpresa,
                 CNPJ,
-                endereco
+                endereco,
+                associadoId: decoded.id
             }).catch((error) => {
-                res.status(500).json({ msg: "não foi possivel inserir os dados" });
+                return res.status(500).json({ msg: "não foi possivel inserir os dados" });
             });
 
             if (cliente)
-                res.status(201).json({ msg: "novo cliente foi adicionado" });
+                return res.status(201).json({ msg: "novo cliente foi adicionado" });
             else
-                res.status(404).json({ msg: "não foi possivel cadastrar novo cliente" });
+                return res.status(404).json({ msg: "não foi possivel cadastrar novo cliente" });
         }
     },
 
