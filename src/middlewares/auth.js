@@ -3,12 +3,13 @@ const jwt = require("jsonwebtoken");
 function verifyJWT(req, res, next) {
     const token = req.headers["x-access-token"];
     if (!token)
-        return res.status(401).json({ msg: "token indefnido "});
+        return res.status(401).json({ msg: "token indefinido "});
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err)
-            return res.status(401).json({ msg: "falha na autenticaçao do token" });
+            return res.status(401).json({ msg: "falha na autenticação do token" });
         
-        req.sellerId = decoded.id;
+        req.id = decoded.id;
+        req.perfil = decoded.role;
         next();
     })
 }

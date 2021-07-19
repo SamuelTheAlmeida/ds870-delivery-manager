@@ -3,12 +3,10 @@ const clienteRouter = express.Router();
 const clienteController = require("../controllers/clienteController");
 const auth = require("../middlewares/auth");
 
-//sellerRouter.post("/authentication", requestValidator, sellerController.authentication);
-
-clienteRouter.get("/listar", clienteController.listarTodos);
-clienteRouter.post("/buscarPorCNPJ", clienteController.buscarPorCNPJ);
-clienteRouter.post("/novo", clienteController.novo);
-clienteRouter.delete("/excluir/:id", clienteController.excluir);
-clienteRouter.put("/atualizar", clienteController.atualizar);
+clienteRouter.get("/listar", auth, clienteController.listarTodos);
+clienteRouter.post("/buscarPorCNPJ", auth, clienteController.buscarPorCNPJ);
+clienteRouter.post("/novo", auth, clienteController.novo);
+clienteRouter.delete("/excluir/:id", auth, clienteController.excluir);
+clienteRouter.put("/atualizar", auth, clienteController.atualizar);
 
 module.exports = clienteRouter;

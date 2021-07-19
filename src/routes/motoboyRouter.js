@@ -3,12 +3,10 @@ const motoboyRouter = express.Router();
 const motoboyController = require("../controllers/motoboyController");
 const auth = require("../middlewares/auth");
 
-//sellerRouter.post("/authentication", requestValidator, sellerController.authentication);
-
-motoboyRouter.get("/listar", motoboyController.listarTodos);
-motoboyRouter.post("/buscarPorCPF", motoboyController.buscarPorCPF);
-motoboyRouter.post("/novo", motoboyController.novo);
-motoboyRouter.delete("/excluir/:id", motoboyController.excluir);
-motoboyRouter.put("/atualizar", motoboyController.atualizar);
+motoboyRouter.get("/listar", auth, motoboyController.listarTodos);
+motoboyRouter.post("/buscarPorCPF", auth, motoboyController.buscarPorCPF);
+motoboyRouter.post("/novo", auth, motoboyController.novo);
+motoboyRouter.delete("/excluir/:id", auth, motoboyController.excluir);
+motoboyRouter.put("/atualizar", auth, motoboyController.atualizar);
 
 module.exports = motoboyRouter;

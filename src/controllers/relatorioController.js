@@ -8,23 +8,16 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 function validarPerfil(req, perfil, res) {
-    const token = req.headers['x-access-token'];
-    const secret = process.env.JWT_SECRET;
-    const decoded = jwt.verify(token, secret);
-
-    if (decoded.role !== perfil || !decoded.id)
+    if (req.perfil !== perfil || !req.id)
         return res.status(403).json({ msg: "Acesso não permitido." });
-    else
-        return decoded;
 }
+
 
 module.exports = {
     async administrativoAssociados(req, res) {
-        const resultValidacao = validarPerfil(req, "associado", res);
-        if (!resultValidacao.id)
-            return resultValidacao;
+        validarPerfil(req, "associado", res);
 
-        const associadoId = resultValidacao.id;
+        const associadoId = req.id;
         const Op = Sequelize.Op;
 
         const totalEntregas = await Entrega.findAndCountAll({
@@ -129,11 +122,9 @@ module.exports = {
     },
 
     async financeiro(req, res) {
-        const resultValidacao = validarPerfil(req, "associado", res);
-        if (!resultValidacao.id)
-            return resultValidacao;
+        validarPerfil(req, "associado", res);
 
-        const associadoId = resultValidacao.id;
+        const associadoId = req.id;
         const Op = Sequelize.Op;
 
         const entregasRealizadas = await Entrega.findAll({
@@ -164,11 +155,9 @@ module.exports = {
     },
 
     async financeiroMotoboys(req, res) {
-        const resultValidacao = validarPerfil(req, "motoboy", res);
-        if (!resultValidacao.id)
-            return resultValidacao;
+        validarPerfil(req, "motoboy", res);
 
-        const motoboyId = resultValidacao.id;
+        const motoboyId = req.id;
 
         const entregasRealizadas = await Entrega.findAll({
             where: {

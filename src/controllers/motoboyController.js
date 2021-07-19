@@ -1,9 +1,12 @@
 const Motoboy = require("../models/Motoboy");
 
 const Sequelize = require("sequelize");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const Joi = require("joi");
+
+function validarPerfil(req, perfis, res) {
+    if (!perfis.includes(req.perfil) || !req.id)
+        return res.status(403).json({ msg: "Acesso não permitido." });
+}
 
 function novoMotoboyValidator(req, res) {
     const body = req.body;
@@ -28,6 +31,8 @@ function novoMotoboyValidator(req, res) {
 
 module.exports = {
     async novo(req, res) {
+        validarPerfil(req, ["associado"], res);
+        
         const { nome, CPF, senha, telefone } = req.body;
         const { validator, error } = novoMotoboyValidator(req, res);
         if (!validator) {
@@ -61,6 +66,8 @@ module.exports = {
     },
 
     async listarTodos(req, res) {
+        validarPerfil(req, ["associado"], res);
+
         const motoboys = await Motoboy.findAll({
             order: [["nome", "ASC"]],
         }).catch((error) => {
@@ -72,6 +79,8 @@ module.exports = {
     },
 
     async buscarPorCPF(req, res) {
+        validarPerfil(req, ["associado"], res);
+
         const CPF = req.body.CPF;
         
         const Op = Sequelize.Op;
@@ -90,6 +99,8 @@ module.exports = {
     },
 
     async atualizar(req, res) {
+        validarPerfil(req, ["associado"], res);
+
 		const motoboyId = req.body.id;
 		const motoboy = req.body;
         const motoboyExiste = await Motoboy.findByPk(motoboyId);
@@ -119,6 +130,8 @@ module.exports = {
 	},
 
     async excluir(req, res) {
+        validarPerfil(req, ["associado"], res);
+        
 		const motoboyId = req.params.id;
 		const motoboyExcluido = await Motoboy.destroy({
 			where: { id: motoboyId },

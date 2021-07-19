@@ -3,13 +3,12 @@ const entregaRouter = express.Router();
 const entregaController = require("../controllers/entregaController");
 const auth = require("../middlewares/auth");
 
-entregaRouter.get("/listar", entregaController.listarTodas);
-entregaRouter.get("/listarRealizadas", entregaController.listarRealizadas);
-entregaRouter.get("/listarPendentes", entregaController.listarPendentes);
-entregaRouter.get("/listarPorMotoboy/:id", entregaController.listarPorMotoboy);
-//entregaRouter.post("/searchSellerByName", auth, requestValidator, motoboyController.searchSellerByName);
-entregaRouter.post("/novo", entregaController.novo);
-entregaRouter.delete("/excluir/:id", entregaController.excluirPendente);
-entregaRouter.put("/atualizar", entregaController.atualizarPendente);
+entregaRouter.get("/listar", auth, entregaController.listarTodas);
+entregaRouter.get("/listarRealizadas", auth, entregaController.listarRealizadas);
+entregaRouter.get("/listarPendentes", auth, entregaController.listarPendentes);
+entregaRouter.get("/listarPorMotoboy/:id", auth, entregaController.listarPorMotoboy);
+entregaRouter.post("/novo", auth, entregaController.novo);
+entregaRouter.delete("/excluir/:id", auth, entregaController.excluirPendente);
+entregaRouter.put("/atualizar", auth, entregaController.atualizarPendente);
 
 module.exports = entregaRouter;

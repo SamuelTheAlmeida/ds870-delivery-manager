@@ -1,11 +1,13 @@
 const Entrega = require("../models/Entrega");
 const Cliente = require("../models/Cliente");
 const Motoboy = require("../models/Motoboy");
-
 const Sequelize = require("sequelize");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const Joi = require("joi");
+
+function validarPerfil(req, perfis, res) {
+    if (!perfis.includes(req.perfil) || !req.id)
+        return res.status(403).json({ msg: "Acesso não permitido." });
+}
 
 function novaEntregaValidator(req, res) {
     const body = req.body;
@@ -29,6 +31,8 @@ function novaEntregaValidator(req, res) {
 
 module.exports = {
     async novo(req, res) {
+        validarPerfil(req, ["associado"], res);
+
         const { descricao, clienteId, motoboyId } = req.body;
         const { validator, error } = novaEntregaValidator(req, res);
         if (!validator) {
@@ -66,43 +70,92 @@ module.exports = {
     },
 
     async listarTodas(req, res) {
+        validarPerfil(req, ["associado", "motoboy"], res);
+
         const entregas = await Entrega.findAll({
             order: [["createdAt", "DESC"]],
-        }).catch((error) => {
-            res.status(500).json({ msg: "Falha na conexão" });
         });
-        if (entregas) res.status(200).json({ entregas });
+        
+
+        if (entregas.length > 0) res.status(200).json({ entregas });
         else
             res.status(404).json({ msg: "Não foi possivel encontrar entregas "})
     },
 
     async listarRealizadas(req, res) {
-        const entregas = await Entrega.findAll({
-            where: { status: "Realizada" },
-            order: [["createdAt", "DESC"]],
-        }).catch((error) => {
-            res.status(500).json({ msg: "Falha na conexão" });
-        });
+        validarPerfil(req, ["associado", "motoboy"], res);
+
+        var entregas = [];
+        if (req.perfil == "motoboy") {
+            entregas = await Entrega.findAll({
+                where: { status: "Realizada", motoboyId: req.id },
+                order: [["createdAt", "DESC"]],
+            });
+        } else {
+            entregas = await Entrega.findAll({
+                include: {
+                    model: Cliente,
+                    attributes: [],
+                    where: {
+                      associadoId: {
+                        [Sequelize.Op.eq]: req.id
+                      }
+                    }
+                },
+                where: { status: "Realizada" },
+                order: [["createdAt", "DESC"]],
+            });
+        }
+
         if (entregas) res.status(200).json({ entregas });
         else
-            res.status(404).json({ msg: "Não foi possivel encontrar entregas "})
+            res.status(404).json({ msg: "Não foi possivel encontrar entregas realizadas "})
     },
 
     async listarPendentes(req, res) {
-        const entregas = await Entrega.findAll({
-            where: { status: "Pendente" },
-            order: [["createdAt", "DESC"]],
-        }).catch((error) => {
-            res.status(500).json({ msg: "Falha na conexão" });
-        });
+        validarPerfil(req, ["associado", "motoboy"], res);
+        const Op = Sequelize.Op;
+        var entregas = [];
+        if (req.perfil == "motoboy") {
+            entregas = await Entrega.findAll({
+                where: { status: "Pendente", motoboyId: req.id },
+                order: [["createdAt", "DESC"]],
+            });
+        } else {
+            entregas = await Entrega.findAll({
+                include: {
+                    model: Cliente,
+                    attributes: [],
+                    where: {
+                      associadoId: {
+                        [Op.eq]: req.id
+                      }
+                    }
+                },
+                where: { status: "Pendente" },
+                order: [["createdAt", "DESC"]],
+            });
+        }
+
         if (entregas) res.status(200).json({ entregas });
         else
-            res.status(404).json({ msg: "Não foi possivel encontrar entregas "})
+            res.status(404).json({ msg: "Não foi possivel encontrar entregas pendentes"})
     },
 
     async listarPorMotoboy(req, res) {
+        validarPerfil(req, ["associado"], res);
+
         const motoboyId = req.params.id;
         const entregas = await Entrega.findAll({
+            include: {
+                model: Cliente,
+                attributes: [],
+                where: {
+                  associadoId: {
+                    [Sequelize.Op.eq]: req.id
+                  }
+                }
+            },
             where: { motoboyId },
             order: [["createdAt", "DESC"]],
         }).catch((error) => {
@@ -114,6 +167,8 @@ module.exports = {
     },
 
     async atualizarPendente(req, res) {
+        validarPerfil(req, ["motoboy"], res);
+
 		const entregaId = req.body.id;
 		const entrega = req.body;
         const entregaExistente = await Entrega.findByPk(entregaId);
@@ -137,6 +192,8 @@ module.exports = {
 	},
 
     async excluirPendente(req, res) {
+        validarPerfil(req, ["associado"], res);
+        
 		const entregaId = req.params.id;
         const entregaExistente = await Entrega.findByPk(entregaId);
 

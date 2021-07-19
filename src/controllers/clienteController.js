@@ -1,9 +1,13 @@
 const Cliente = require("../models/Cliente");
 
 const Sequelize = require("sequelize");
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Joi = require("joi");
+
+function validarPerfil(req, perfil, res) {
+    if (req.perfil !== perfil || !req.id)
+        return res.status(403).json({ msg: "Acesso não permitido." });
+}
 
 function novoClienteValidator(req, res) {
     const body = req.body;
@@ -27,13 +31,8 @@ function novoClienteValidator(req, res) {
 
 module.exports = {
     async novo(req, res) {
-        const token = req.headers['x-access-token'];
-        const secret = process.env.JWT_SECRET;
-        const decoded = jwt.verify(token, secret);
-        console.log(decoded);
-
-        if (decoded.role !== 'associado' || !decoded.id)
-            return res.status(403).json({ msg: "Acesso não permitido." });
+        validarPerfil(req, "associado", res);
+        const associadoId = req.id;
 
         const { nomeEmpresa, CNPJ, endereco } = req.body;
         const { validator, error } = novoClienteValidator(req, res);
@@ -55,7 +54,7 @@ module.exports = {
                 nomeEmpresa,
                 CNPJ,
                 endereco,
-                associadoId: decoded.id
+                associadoId
             }).catch((error) => {
                 return res.status(500).json({ msg: error });
             });
@@ -68,6 +67,8 @@ module.exports = {
     },
 
     async listarTodos(req, res) {
+        validarPerfil(req, "associado", res);
+        
         const clientes = await Cliente.findAll({
             order: [["nomeEmpresa", "ASC"]],
         }).catch((error) => {
@@ -79,6 +80,8 @@ module.exports = {
     },
 
     async buscarPorCNPJ(req, res) {
+        validarPerfil(req, "associado", res);
+        
         const CNPJ = req.body.CNPJ;
         
         const Op = Sequelize.Op;
@@ -97,6 +100,8 @@ module.exports = {
     },
 
     async excluir(req, res) {
+        validarPerfil(req, "associado", res);
+        
 		const clienteId = req.params.id;
 		const clienteExcluido = await Cliente.destroy({
 			where: { id: clienteId },
@@ -110,6 +115,8 @@ module.exports = {
 	},
     
 	async atualizar(req, res) {
+        validarPerfil(req, "associado", res);
+        
 		const clienteId = req.body.id;
 		const cliente = req.body;
         const clienteExiste = await Cliente.findByPk(clienteId);

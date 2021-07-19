@@ -4,7 +4,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 function gerarToken(id, role) {
-    console.log(process.env.JWT_SECRET);
     const token = jwt.sign({ id, role }, process.env.JWT_SECRET, {
         expiresIn: "5h",
     });

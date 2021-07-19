@@ -1,5 +1,4 @@
 const express = require("express");
-const sellerRouter = require("./sellerRouter");
 const clienteRouter = require("./clienteRouter");
 const motoboyRouter = require("./motoboyRouter");
 const entregaRouter = require("./entregaRouter");
@@ -12,8 +11,6 @@ const router = express.Router();
 router.get("/", (req, res) => {
     res.send("It's working");
 });
-
-router.use("/seller", sellerRouter);
 
 router.use("/cliente", clienteRouter);
 router.use("/motoboy", motoboyRouter);
