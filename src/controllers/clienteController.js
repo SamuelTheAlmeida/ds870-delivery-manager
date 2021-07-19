@@ -39,7 +39,7 @@ module.exports = {
         const { validator, error } = novoClienteValidator(req, res);
         if (!validator) {
             return res.status(422).json({
-                msg: "daods invalidos",
+                msg: "dadss inválidos",
                 error: error[0].message
             });
         }
@@ -57,7 +57,7 @@ module.exports = {
                 endereco,
                 associadoId: decoded.id
             }).catch((error) => {
-                return res.status(500).json({ msg: "não foi possivel inserir os dados" });
+                return res.status(500).json({ msg: error });
             });
 
             if (cliente)
@@ -116,6 +116,14 @@ module.exports = {
         if (!clienteExiste)
             res.status(404).json({ msg: "cliente não encontrado." });
         else {
+            if (cliente.CNPJ) {
+                const cnpjExiste = await Cliente.findOne({
+                    where: { CNPJ: cliente.CNPJ },
+                });
+                if (cnpjExiste)
+                    return res.status(400).json({ msg: "CNPJ já existente" });
+            }
+
             if (cliente.nomeEmpresa || cliente.CNPJ || cliente.endereco) {
                 await Cliente.update(cliente, {
                     where: { id: clienteId },

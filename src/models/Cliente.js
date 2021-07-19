@@ -13,8 +13,8 @@ class Cliente extends Sequelize.Model {
     }
 
     static associate(models) {
-        this.hasMany(models.Entrega, { foreignKey: "clienteId" });
-        this.belongsTo(models.Associado, { foreignKey: "associadoId" });
+        this.hasMany(models.Entrega, { foreignKey: "clienteId", onDelete: "cascade" });
+        this.belongsTo(models.Associado, { foreignKey: "associadoId", onDelete: "cascade" });
     }
 }
 

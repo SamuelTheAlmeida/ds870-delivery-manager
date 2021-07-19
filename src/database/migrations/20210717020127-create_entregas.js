@@ -25,15 +25,15 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: { model: "Clientes", key: "id" },
-        onUpdate: "RESTRICT",
-        onDelete: "RESTRICT"
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE"
       },
       motoboyId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: { model: "Motoboys", key: "id" },
-        onUpdate: "RESTRICT",
-        onDelete: "RESTRICT"
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE"
       },
       createdAt: {
         type: Sequelize.DATE,

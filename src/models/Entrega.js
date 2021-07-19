@@ -13,8 +13,8 @@ class Entrega extends Sequelize.Model {
     }
 
     static associate(models) {
-        this.belongsTo(models.Cliente, { foreignKey: "clienteId" });
-        this.belongsTo(models.Motoboy, { foreignKey: "motoboyId" });
+        this.belongsTo(models.Cliente, { foreignKey: "clienteId", onDelete: "cascade" });
+        this.belongsTo(models.Motoboy, { foreignKey: "motoboyId", onDelete: "cascade" });
     }
 }
 

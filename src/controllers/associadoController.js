@@ -1,4 +1,6 @@
 const Associado = require("../models/Associado");
+const Entrega = require("../models/Entrega");
+const Cliente = require("../models/Cliente");
 
 const Sequelize = require("sequelize");
 const bcrypt = require("bcryptjs");
@@ -121,14 +123,27 @@ module.exports = {
 
     async excluir(req, res) {
 		const associadoId = req.params.id;
+
+        const idsClientes = await Cliente.findAll({
+            where: { associadoId },
+            attributes: ['id']
+        });
+
+        idsClientes.forEach(function (id) {
+            Entrega.destroy({
+                where: { clienteId: id }
+            });
+        });
+
+
 		const associadoExcluido = await Associado.destroy({
 			where: { id: associadoId },
 		}).catch(async (error) => {
-            res.status(500).json({ msg: "Falha na conexão" });
+            return res.status(500).json({ msg: error});
 		});
 
 		if (associadoExcluido != 0)
-			res.status(200).json({ msg: "associado excluido com sucesso." });
+			return res.status(200).json({ msg: "associado excluido com sucesso." });
 		else res.status(404).json({ msg: "associado não encontrado." });
 	},
 }
