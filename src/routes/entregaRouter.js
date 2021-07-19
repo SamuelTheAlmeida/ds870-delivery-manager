@@ -2,7 +2,6 @@ const express = require("express");
 const entregaRouter = express.Router();
 const entregaController = require("../controllers/entregaController");
 const auth = require("../middlewares/auth");
-const requestValidator = require("../middlewares/schemaValidator")
 
 entregaRouter.get("/listar", entregaController.listarTodas);
 entregaRouter.get("/listarRealizadas", entregaController.listarRealizadas);

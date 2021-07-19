@@ -2,7 +2,6 @@ const express = require("express");
 const motoboyRouter = express.Router();
 const motoboyController = require("../controllers/motoboyController");
 const auth = require("../middlewares/auth");
-const requestValidator = require("../middlewares/schemaValidator")
 
 //sellerRouter.post("/authentication", requestValidator, sellerController.authentication);
 

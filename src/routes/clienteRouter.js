@@ -2,7 +2,6 @@ const express = require("express");
 const clienteRouter = express.Router();
 const clienteController = require("../controllers/clienteController");
 const auth = require("../middlewares/auth");
-const requestValidator = require("../middlewares/schemaValidator")
 
 //sellerRouter.post("/authentication", requestValidator, sellerController.authentication);
 

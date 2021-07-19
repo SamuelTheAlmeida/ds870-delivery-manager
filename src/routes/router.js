@@ -1,6 +1,5 @@
 const express = require("express");
 const sellerRouter = require("./sellerRouter");
-const saleRouter = require("./saleRouter");
 const clienteRouter = require("./clienteRouter");
 const motoboyRouter = require("./motoboyRouter");
 const entregaRouter = require("./entregaRouter");
@@ -15,7 +14,6 @@ router.get("/", (req, res) => {
 });
 
 router.use("/seller", sellerRouter);
-router.use("/sale", saleRouter);
 
 router.use("/cliente", clienteRouter);
 router.use("/motoboy", motoboyRouter);

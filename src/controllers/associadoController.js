@@ -10,10 +10,11 @@ const Joi = require("joi");
 function novoAssociadoValidator(req, res) {
     const body = req.body;
     const schema = Joi.object().keys({
-        nomeEmpresa: Joi.string().required(),
-        CNPJ: Joi.string().required(),
-        senha: Joi.string().required(),
-        nomeEmpresa: Joi.string().optional(),
+        nomeEmpresa: Joi.string().required().max(255),
+        CNPJ: Joi.string().required().min(14).max(14),
+        senha: Joi.string().min(8).pattern(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)
+            .required().max(255),
+        endereco: Joi.string().optional(),
     });
     const { error, value } = schema.validate(body);
     if (error)

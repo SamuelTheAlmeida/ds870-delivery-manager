@@ -2,7 +2,6 @@ const express = require("express");
 const associadoRouter = express.Router();
 const associadoController = require("../controllers/associadoController");
 const auth = require("../middlewares/auth");
-const requestValidator = require("../middlewares/schemaValidator")
 
 associadoRouter.get("/listar", associadoController.listarTodos);
 associadoRouter.post("/buscarPorCNPJ", associadoController.buscarPorCNPJ);
