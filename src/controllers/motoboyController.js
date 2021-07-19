@@ -11,10 +11,11 @@ function validarPerfil(req, perfis, res) {
 function novoMotoboyValidator(req, res) {
     const body = req.body;
     const schema = Joi.object().keys({
-        nome: Joi.string().required(),
+        nome: Joi.string().required().max(255),
         CPF: Joi.string().required().min(11).max(11),
-        senha: Joi.string().required(),
-        telefone: Joi.string().required()
+        senha: Joi.string().min(8).pattern(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)
+            .required().max(255),
+        telefone: Joi.string().required().min(8).max(11)
     });
     const { error, value } = schema.validate(body);
     if (error)

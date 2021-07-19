@@ -38,7 +38,7 @@ module.exports = {
         const { validator, error } = novoClienteValidator(req, res);
         if (!validator) {
             return res.status(422).json({
-                msg: "dadss inválidos",
+                msg: "dados inválidos",
                 error: error[0].message
             });
         }
@@ -70,6 +70,7 @@ module.exports = {
         validarPerfil(req, "associado", res);
         
         const clientes = await Cliente.findAll({
+            where: { associadoId: req.id },
             order: [["nomeEmpresa", "ASC"]],
         }).catch((error) => {
             res.status(500).json({ msg: "Falha na conexão" });
@@ -86,7 +87,7 @@ module.exports = {
         
         const Op = Sequelize.Op;
         const cliente = await Cliente.findOne({
-            where: { CNPJ: { [Op.like]: "%" + CNPJ + "%" }},
+            where: { CNPJ: { [Op.like]: "%" + CNPJ + "%" }, associadoId: req.id},
         });
         if (cliente) {
             if (cliente === '')
